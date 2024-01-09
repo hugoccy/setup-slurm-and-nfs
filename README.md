@@ -10,7 +10,7 @@ sudo passwd root
 ssh-keygen -t rsa -b 4096(key length)\
 vim .ssh/id_rsa.pub
 
-# copy all rsa keys to slaves .ssh/authorized_keys
+# copy all rsa keys to .ssh/authorized_keys and copy to all slaves
 scp master:~/.ssh/authorized_keys .ssh/authorized_keys
 
 # setup hosts
