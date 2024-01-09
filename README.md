@@ -90,7 +90,7 @@ https://blog.devcloud.com.tw/ubuntu-nfs-install/
 # nfs
 sudo apt-get update
 # Master
-apt install nfs-kernel-server nfs-common
+apt install nfs-kernel-server nfs-common\
 mkdir /opt/nfs\
 sudo vim /etc/exports\
 /opt/nfs  192.168.0.0/24(rw,sync,no_subtree_check,no_root_squash)
