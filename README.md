@@ -31,7 +31,7 @@ scp master:/etc/munge/munge.key /etc/munge/munge.key\
 systemctl restart munge.service
 
 # test if munge successfully
-munge -n | ssh ubuntu1 unmunge\
+munge -n | ssh ubuntu1 unmunge
 # if not check the time 
 date
 # check uid and gid 
