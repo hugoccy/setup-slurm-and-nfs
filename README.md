@@ -77,7 +77,7 @@ ConstrainRAMSpace=no
 # test slurm
 Master: slurmctld -D\
 Slave: slurmd -D\
-srun --nodes=1 --ntasks-per-node=1 bash -c "echo Hello world from \`hostname\`"
+srun --nodes=1 --ntasks-per-node=1 bash -c "echo Hello world from \\`hostname\\`"
 
 # start slurm
 Master: systemctl start slurmctld.service\
