@@ -111,3 +111,28 @@ vim /etc/fstab
 ...
 # 增加下列內容，並將 IP 修改為自己的 NFS Server IP.
 192.168.0.50:/opt/nfs /opt/nfs nfs rw 0 0 
+
+# ipoib, rdma
+vi /etc/modules
+
+ib_umad
+ib_ipoib
+xprtrdma
+svcrdma
+
+modprobe 上面四個
+沒過就安裝 
+
+ibstat
+沒過就安裝
+
+ip a
+找到對的 port
+
+編輯 /etc/netplan/<yaml>
+ex:
+    ibp4s0:
+      addresses:
+        - 172.16.0.206/24
+
+ping master to check
