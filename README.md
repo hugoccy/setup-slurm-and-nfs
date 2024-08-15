@@ -140,4 +140,48 @@ ping master to check
 # 新增 rdma port
 apt install rdma-core\
 apt install rdmacm-utils\
-echo 'rdma 20049' | tee /proc/fs/nfsd/portlist
+
+
+/lib/systemd/system/nfs-server.service
+
+[Unit]
+Description=NFS server and services
+DefaultDependencies=no
+Requires=network.target proc-fs-nfsd.mount
+Requires=nfs-mountd.service
+Wants=rpcbind.socket
+Wants=nfs-idmapd.service
+
+After=local-fs.target
+After=network.target proc-fs-nfsd.mount rpcbind.socket nfs-mountd.service
+After=nfs-idmapd.service rpc-statd.service
+Before=rpc-statd-notify.service
+
+GSS services dependencies and ordering
+Wants=auth-rpcgss-module.service
+After=rpc-gssd.service rpc-svcgssd.service
+
+start/stop server before/after client
+Before=remote-fs-pre.target
+
+Wants=nfs-config.service
+After=nfs-config.service
+
+[Service]
+EnvironmentFile=-/run/sysconfig/nfs-utils
+
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/sbin/modprobe xprtrdma
+ExecStartPre=/sbin/modprobe svcrdma
+ExecStartPre=/usr/sbin/exportfs -r
+ExecStart=/usr/sbin/rpc.nfsd $RPCNFSDARGS
+ExecStartPost=/bin/bash -c "sleep 3 && echo 'rdma 20049' | tee /proc/fs/nfsd/portlist"
+ExecStop=/usr/sbin/rpc.nfsd 0
+ExecStopPost=/usr/sbin/exportfs -au
+ExecStopPost=/usr/sbin/exportfs -f
+
+ExecReload=/usr/sbin/exportfs -r
+
+[Install]
+WantedBy=multi-user.target
