@@ -136,3 +136,8 @@ ex:
         - 172.16.0.206/24
 
 ping master to check
+
+# 新增 rdma port
+apt install rdma-core
+apt install rdmacm-utils
+echo 'rdma 20049' | tee /proc/fs/nfsd/portlist
